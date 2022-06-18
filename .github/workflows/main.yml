@@ -36,7 +36,7 @@ jobs:
           echo test, and deploy your project.
           pip install requests ttkbootstrap pyinstaller
           pyinstaller -F -o redstone.ico main.py -n RSD_console.exe
-          pyinstaller -F -o redstone.ico gui.py -n RSD_gui.exe -W
+          pyinstaller -F -o redstone.ico gui.py -n RSD_gui.exe -w
           
       - name: Create Release
         id: create_release
