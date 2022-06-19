@@ -35,8 +35,8 @@ jobs:
         run: |
          echo Add other actions to build,
          echo test, and deploy your project.
-         docker run -v $GITHUB_WORKSPACE:/src cdrx/pyinstaller-windows:latest 'pyinstaller -F --clean -y --dist ./ --workpath /tmp main.py -o redstone.ico'
-         docker run -v $GITHUB_WORKSPACE:/src cdrx/pyinstaller-windows:latest 'pyinstaller -F --clean -y --dist ./ --workpath /tmp gui.py -w -o redstone.ico'
+         docker run -v $GITHUB_WORKSPACE:/src cdrx/pyinstaller-windows:latest 'pyinstaller -F --clean -y --dist ./ --workpath /tmp main.py -i redstone.ico'
+         docker run -v $GITHUB_WORKSPACE:/src cdrx/pyinstaller-windows:latest 'pyinstaller -F --clean -y --dist ./ --workpath /tmp gui.py -w -i redstone.ico'
          rename $GITHUB_WORKSPACE/main.exe RSD_console.exe
          rename $GITHUB_WORKSPACE/gui.exe RSD_gui.exe
          zip -r $GITHUB_WORKSPACE/RSD.zip $GITHUB_WORKSPACE/RSD_console.exe $GITHUB_WORKSPACE/RSD_gui.exe
