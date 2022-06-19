@@ -8,7 +8,7 @@ def upd(path:str):
     os.system("chcp 65001")
     program_version = str("2.0.0")
     os.system("title RedStone Update Version: " + program_version)
-
+    path=path+"/mods/"
     down_api_list = ['https://republicofredstone.pages.dev/', 'https://republicofredstone-miangou.vercel.app/',
                      'https://redstone-download.netlify.app/', 'https://miangou.github.io/republicofredstone/']
     down_api_can_use = []
@@ -62,22 +62,19 @@ def upd(path:str):
             # print(content_size)
             data_count = 0
             with open(file_path, "wb") as file:
+                print("[%s]"
+                      % (file_path), end=" ")
                 for data in response.iter_content(chunk_size=chunk_size):
                     file.write(data)
                     data_count = data_count + len(data)
                     # now_jd = (data_count / content_size) * 100
                     speed = data_count / 1024 / (time.time() - start_time)
-                    print(" [%s] - %dKB [%dKB/s]"
-                          % (file_path, data_count / 1024, speed), end=" ")
-                    # print("\r %s 文件下载进度：%d%%(%d/%d) [%dKB/s]"
-                    #       % (now_jd, data_count, content_size, speed, file_path), end=" ")
-        print("")
 
+            print("")
 
     # 联网判断
     if not connect_internet(github_api):
         print("未网络.请联网后使用")
-        os.system("pause")
         sys.exit()
     else:
         print("已链接网络")
@@ -205,4 +202,3 @@ def upd(path:str):
     if zhuangtai == 0:
         print("恭喜!您的Mod(s)依赖均为最新!")
     print("----------\n操作完成\n----------")
-    os.system("pause")

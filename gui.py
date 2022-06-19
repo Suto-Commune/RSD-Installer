@@ -1,11 +1,11 @@
 import sys
-import upd2
+import guiupd
 from tkinter import filedialog
 import ttkbootstrap as ttk
 import os
 
 os.system("chcp 65001")
-df_path=os.path.dirname(os.path.realpath(__file__))+"/.minecraft/mods/"
+df_path=os.path.dirname(os.path.realpath(__file__))+"/.minecraft"
 df_path=df_path.replace('\\','/')
 class myStdout():  # 重定向类
     def __init__(self):
@@ -31,12 +31,12 @@ class myStdout():  # 重定向类
 def btn_func():
     if not select_path.get():
         select_path.set(df_path)
-    upd2.upd(select_path.get())
+    guiupd.upd(select_path.get())
 
 
 def select_folder():
     # 文件夹选择
-    selected_folder = filedialog.askdirectory()  # 使用askdirectory函数选择文件夹
+    selected_folder = filedialog.askdirectory(title="选择.minecraft文件夹",)  # 使用askdirectory函数选择文件夹
     select_path.set(selected_folder)
 
 
