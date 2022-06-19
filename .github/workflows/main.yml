@@ -18,7 +18,7 @@ jobs:
   # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -29,33 +29,34 @@ jobs:
       - name: Run a one-line script
         run: echo Hello, world!
 
-      # Runs a set of commands using the runners shell
+
+     # Runs a set of commands using the runners shell
       - name: Run a multi-line script
         run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
-          pip install requests ttkbootstrap pyinstaller
-          pyinstaller -F -i redstone.ico main.py -n RSD_console.exe
-          pyinstaller -F -i redstone.ico gui.py -n RSD_gui.exe -w
-          
+         echo Add other actions to build,
+         echo test, and deploy your project.
+         docker run -v $GITHUB_WORKSPACE:/src cdrx/pyinstaller-windows:latest 'pyinstaller -F --clean -y --dist ./ --workpath /tmp main.py -o redstone.ico'
+         docker run -v $GITHUB_WORKSPACE:/src cdrx/pyinstaller-windows:latest 'pyinstaller -F --clean -y --dist ./ --workpath /tmp gui.py -w -o redstone.ico'
+         rename $GITHUB_WORKSPACE/main.exe RSD_console.exe
+         rename $GITHUB_WORKSPACE/gui.exe RSD_gui.exe
+         zip -r $GITHUB_WORKSPACE/RSD.zip $GITHUB_WORKSPACE/RSD_console.exe $GITHUB_WORKSPACE/RSD_gui.exe
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          body: TODO New Release.
-          draft: false
-          prerelease: false
-          
+         tag_name: ${{ github.ref }}
+         release_name: Release ${{ github.ref }}
+         draft: false
+         prerelease: false
       - name: Upload Release Asset
+        id: upload-release-asset
         uses: actions/upload-release-asset@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./RSD_console.exe ./RSD_gui.exe
-          asset_name: RSD_console.exe RSD_gui.exe
-          asset_content_type: application/exe
+         upload_url: ${{ steps.create_release.outputs.upload_url }}
+         asset_path: ${{ github.workspace }}/RSD-installer.zip
+         asset_name: nainiu_upload.zip
+         asset_content_type: application/zip
